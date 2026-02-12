@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="HAIC: Humanoid Agile Object Interaction Control via Dynamics-Aware World Model">
+  <meta name="keywords" content="Humanoid, Whole-body Control, Human-Object Interaction, World Model">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>
+    HAIC: Humanoid Agile Object Interaction Control via Dynamics-Aware World Model
+  </title>
+
+  <link rel="icon" href="./static/images/skateboarding_icon.png">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QZ38WT2YPD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-QZ38WT2YPD');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://kit.fontawesome.com/19914a84eb.js" crossorigin="anonymous"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+
+  <meta property="og:image" content="./static/images/teaser.png" />
+  <meta property="og:image:secure" content="./static/images/teaser.png" />
+</head>
+
+<section class="hero is-link is-fullheight video" style="overflow: hidden; position:relative;">
+  <div class="hero-video" style="height: 100%; width: 177.77777778vh; min-width: 100%;min-height: 56.25vw;">
+    <video playsinline autoplay muted loop>
+      <source src="./static/videos/top.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero-video is-hidden-tablet is-inline-block-mobile"
+    style="height: 154.28571428vw; width: 100%; min-width:64.81481481vh;min-height:100%;">
+    <video playsinline autoplay muted loop>
+      <source src="./static/videos/top.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="overlay"></div>
+
+  <!-- Top-right corner buttons -->
+  <div style="position: absolute; top: 10px; right: 20px; z-index: 100;">
+    <div class="publication-links" style="display: flex; gap: 10px;">
+      <span class="link-block">
+        <a href="./static/haic.pdf" class="external-link button is-normal is-rounded is-dark" style="font-size: 1.2rem;">
+          <span class="icon">
+            <img src="./static/images/pdf.svg" alt="PDF" />
+          </span>
+          <span>Paper</span>
+        </a>
+      </span>
+      <span class="link-block">
+        <a href="https://arxiv.org/abs/xxx" class="external-link button is-normal is-rounded is-dark" style="font-size: 1.2rem;">
+          <span class="icon">
+            <img src="./static/images/arxiv.svg" alt="arXiv" />
+          </span>
+          <span>arXiv</span>
+        </a>
+      </span>
+    </div>
+  </div>
+
+  <!-- Hero content: will be in the middle -->
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <h1 class="title is-1 publication-title is-size-1-mobile" style="font-size: 6rem;">
+        <span style="color: #ff9900;">HAIC</span>
+      </h1>
+      <h1 class="subtitle is-1 publication-title is-size-4-mobile" style="font-size: 4rem;">
+      <span style="color: #ff9900;">H</span>umanoid 
+      <span style="color: #ff9900;">A</span>gile 
+      Object 
+      <span style="color: #ff9900;">I</span>nteraction 
+      <span style="color: #ff9900;">C</span>ontrol 
+      <br> via Dynamics-Aware World Model
+      </h1>
+    </div>
+
+  </div>
+
+  <!-- Hero footer: will stick at the bottom -->
+  <!-- <div class="hero-foot is-hidden-mobile">
+    <nav class="tabs is-boxed is-fullwidth is-size-4">
+      <ul>
+        <li><a href="#agile-skills">Agile Whole-Body Skills</a></li>
+        <li><a href="#before-after-asap"></a>Before/After ASAP Fine-tuning</a></li>
+        <li><a href="#abstract">Abstract</a></li>
+        <li><a href="#method">Method</a></li>
+      </ul>
+    </nav>
+  </div> -->
+</section>
+
+
+<section class="hero">
+  <div class="toc">
+    <h3>Content</h3>
+    <hr>
+    <ul>
+      <li><a href="#abstract">Abstract</a></li>
+      <!-- <li><a href="#method">Method</a></li> -->
+
+      <li><a href="#task-1">Underactuated Object Interaction</a></li>
+        <li class="toc-subsection"><a href="#underactuated-1">#1: Skateboarding</a></li>
+        <li class="toc-subsection"><a href="#underactuated-2">#2: Cart Pushing</a></li>
+        <li class="toc-subsection"><a href="#underactuated-3">#3: Cart Pulling</a></li>
+
+      <li><a href="#task-2">Long-horizon Interaction</a></li>
+      <li><a href="#task-3">Multi-terrain Interaction</a></li>
+        <li class="toc-subsection"><a href="#terrain-1">#1: Cross slope</a></li>
+        <li class="toc-subsection"><a href="#terrain-2">#2: Cross stair</a></li>
+        <li class="toc-subsection"><a href="#terrain-3">#3: Composed terrain</a></li>
+
+      <li><a href="#generalization">Generalization</a></li>
+        <li class="toc-subsection"><a href="#generalization-1">#1: Box size</a></li>
+        <li class="toc-subsection"><a href="#generalization-2">#2: Terrain rotation</a></li>
+        <li class="toc-subsection"><a href="#generalization-3">#3: Loaded weight</a></li>
+      <li><a href="#failure-cases">Failure Cases</a></li>
+    </ul>
+  </div>
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title" id="main-title"><span style="color: #ff9900;">HAIC</span>: Humanoid Agile Object Interaction Control via Dynamics-Aware World Model</h1>
+
+          <!-- First Row: Main Authors -->
+          <div class="is-size-5 publication-authors" style="line-height: 1.8;">
+            <span class="author-block">
+              <a href="https://ldt29.github.io/" target="_blank">Dongting Li</a><sup>*1,4</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://cybercal.github.io/" target="_blank">Xingyu Chen</a><sup>*2,4</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://openreview.net/profile?id=~Qianyang_Wu1" target="_blank">Qianyang Wu</a><sup>4</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=iJMclnQAAAAJ&hl=en" target="_blank">Bo Chen</a><sup>4</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://openreview.net/profile?id=~Sikai_Wu1" target="_blank">Sikai Wu</a><sup>4</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.linkedin.com/in/hanyu-wu-2a098a255/" target="_blank">Hanyu Wu</a><sup>3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://learning-github-zgy.github.io/" target="_blank">Guoyao Zhang</a><sup>4</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=seNYsXsAAAAJ&hl=en" target="_blank">Liang Li</a><sup>4</sup>
+            </span>
+          </div>
+
+          <!-- Second Row: Advising Authors -->
+          <div class="is-size-5 publication-authors" style="line-height: 1.8;">
+            <span class="author-block">
+              <a href="https://ieeexplore.ieee.org/author/37085630293" target="_blank">Mingliang Zhou</a><sup>4</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://orcid.org/0009-0002-0627-0194" target="_blank">Diyun Xiang</a><sup>4</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://majianzhu.com/" target="_blank">Jianzhu Ma</a><sup>†1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://github.com/jonyzhang2023" target="_blank">Qiang Zhang</a><sup>†2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://facultyprofiles.hkust-gz.edu.cn/faculty-personal-page/XU-Renjing/renjingxu" target="_blank">Renjing Xu</a><sup>†2</sup>
+            </span>
+          </div>
+
+          <div class="is-size-6 publication-authors" style="margin-top: 12px; margin-bottom: 12px;">
+            <sup style="color: #ff9900;">*</sup>Equal Contributions &nbsp;&nbsp; <sup style="color: #ff9900;">†</sup>Equal Advising
+          </div>
+
+          <!-- Institution Names -->
+          <div class="institution-names" style="font-family: 'Google Sans', sans-serif; font-size: 1rem; color: #555; line-height: 1.6;">
+            <sup>1</sup>Tsinghua University, 
+            <sup>2</sup>HKUST(Guangzhou), 
+            <sup>3</sup>ETH Zurich, 
+            <sup>4</sup>Xiaomi Robotics Lab
+          </div>
+
+          <!-- Paper Links -->
+          <div class="publication-links" style="margin-top: 15px;">
+            <!-- PDF Link -->
+            <span class="link-block">
+              <a href="./static/haic.pdf" class="external-link button is-normal is-rounded is-dark" style="margin: 5px;">
+                <span class="icon">
+                  <i class="fas fa-file-pdf"></i>
+                </span>
+                <span>PDF</span>
+              </a>
+            </span>
+            <!-- ArXiv Link -->
+            <span class="link-block">
+              <a href="https://arxiv.org/abs/xxx" class="external-link button is-normal is-rounded is-dark" style="margin: 5px;">
+                <span class="icon">
+                  <i class="ai ai-arxiv"></i>
+                </span>
+                <span>arXiv</span>
+              </a>
+            </span>
+            <!-- Code Link -->
+            <span class="link-block">
+              <a href="#" class="external-link button is-normal is-rounded is-dark" style="margin: 5px;" onclick="alert('Coming soon!'); return false;">
+                <span class="icon">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Code (Coming soon)</span>
+              </a>
+            </span>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+    <!-- Teaser Image -->
+    <div class="columns is-centered" style="margin-top: 2rem;">
+      <div class="columns is-centered">
+        <img src="./static/images/teaser.png" alt="HAIC teaser" style="width: 65%; border-radius: 10px;" />
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section" id="abstract">
+  <div class="container">
+    <!-- Abstract. -->
+    <h2 class="title is-2" id="abstract-title">Abstract</h2>
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <p>
+            Humanoid robots exhibit significant potential for executing complex whole-body interaction tasks in unstructured environments. While recent advancements in Human-Object Interaction (HOI) have been substantial, prevailing methodologies predominantly address the manipulation of fully actuated objects, where the target is rigidly coupled to the robot's end-effector and its state is strictly constrained by the robot's kinematics. This paradigm neglects the pervasive class of underactuated objects characterized by independent dynamics and non-holonomic constraints, which pose significant control challenges due to complex coupling forces and frequent visual occlusions. To bridge this gap, we propose HAIC, a unified framework designed to enable robust interaction across a spectrum of object dynamics without reliance on external state estimation. Central to our approach is a novel dynamics predictor that infers high-order object states, specifically velocity and acceleration, solely from proprioceptive history. These predictions are explicitly projected onto static geometric priors to construct a spatially grounded representation of dynamic occupancy, allowing the policy to internalize collision boundaries and contact affordances in visual blind spots. We employ an asymmetric fine-tuning strategy where the world model continuously adapts to the student policy's exploration, ensuring robust state estimation under distribution shifts. We evaluate our framework on a humanoid robot. Empirical results demonstrate that HAIC achieves high success rates in agile object interactions, including skateboarding, cart pushing, and cart pulling under various weight load conditions, by proactively compensating for inertial physical perturbations, while HAIC simultaneously masters multi-object interaction involving long-horizon tasks and carrying a box across composed terrain by predicting the dynamics of multiple objects.
+          </p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<section class="section" id="task-1">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3" style="text-align: left; padding-bottom: 10px;">Underactuated Object Interaction</h2>
+        <tr>
+          <td>
+            <!-- First Row - Teacher -->
+            <div class="columns is-centered">
+              <div class="column is-four-fifths has-text-centered">
+                <img src="./static/images/objects.jpg" alt="Underactuated object interaction" style="width: 80%; border-radius:10px;">
+              </div>
+            </div>
+          </td>
+        </tr>
+      </div> 
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3" style="text-align: left; padding-bottom: 0px;" id="underactuated-1">Case #1: Skateboarding  </h2>
+        <div class="paper-video-row">
+          <div class="paper-video-item">
+            <video class="paper-video" autoplay muted loop playsinline controls src="./static/videos/skateboard_2.mp4"></video>
+            <div class="gallery-video-caption">View 1</div>
+          </div>
+          <div class="paper-video-item">
+            <video class="paper-video" autoplay muted loop playsinline controls src="./static/videos/skateboard_1.mp4"></video>
+            <div class="gallery-video-caption">View 2</div>
+          </div>
+        </div>
+        <p class="figure-caption non-gallery-caption">
+          <b>Skateboarding:</b> HAIC enables agile underactuated-object interaction by predicting high-order object dynamics from proprioception and proactively compensating inertial perturbations.
+        </p>
+      </div> 
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3" style="text-align: left; padding-bottom: 0px;" id="underactuated-2">Case #2: Cart Pushing </h2>
+        <div class="paper-video-row">
+          <div class="paper-video-item">
+            <video class="paper-video" autoplay muted loop playsinline controls src="./static/videos/Cart_pushing_1.mp4"></video>
+            <div class="gallery-video-caption">View 1</div>
+          </div>
+          <div class="paper-video-item">
+            <video class="paper-video" autoplay muted loop playsinline controls src="./static/videos/Cart_pushing_2.mp4"></video>
+            <div class="gallery-video-caption">View 2</div>
+          </div>
+        </div>
+        <p class="figure-caption non-gallery-caption">
+          <b>Cart Pushing:</b> HAIC handles non-holonomic wheeled objects with coupled dynamics under occlusions, maintaining stability during high-speed pushing.
+        </p>
+      </div> 
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3" style="text-align: left; padding-bottom: 0px;" id="underactuated-3">Case #3: Cart Pulling </h2>
+        <div class="paper-video-row">
+          <div class="paper-video-item">
+            <video class="paper-video" autoplay muted loop playsinline controls src="./static/videos/Cart_pulling_1.mp4"></video>
+            <div class="gallery-video-caption">View 1</div>
+          </div>
+          <div class="paper-video-item">
+            <video class="paper-video" autoplay muted loop playsinline controls src="./static/videos/Cart_pulling_2.mp4"></video>
+            <div class="gallery-video-caption">View 2</div>
+          </div>
+        </div>
+        <p class="figure-caption non-gallery-caption">
+          <b>Cart Pulling:</b> HAIC predicts object velocity/acceleration from proprioception to reduce response lag and improve robustness in dynamic pulling.
+        </p>
+      </div> 
+    </div>
+  </div>
+</section>
+
+
+
+<section class="section" id="task-2">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-2" style="text-align: left; padding-bottom: 10px;"> Long-horizon Interaction </h2>
+        <tr>
+          <td>
+            <div class="columns is-centered"> <!-- Correct Bulma structure -->
+              <div class="paper-video-row">
+                <div class="paper-video-item">
+                  <video class="paper-video" autoplay muted loop playsinline controls src="./static/videos/longhorizon_1.mp4"></video>
+                  <div class="gallery-video-caption">View 1</div>
+                </div>
+                <div class="paper-video-item">
+                  <video class="paper-video" autoplay muted loop playsinline controls src="./static/videos/longhorizon_2.mp4"></video>
+                  <div class="gallery-video-caption">View 2</div>
+                </div>
+              </div>
+            </div>
+            <p class="figure-caption non-gallery-caption">
+              <b>Loading Box:</b> The robot first locates and loads a box onto the cart. <b>Cart Pushing/Pulling:</b> The robot then transports the loaded cart to the target destination, demonstrating coordinated whole-body control over extended task horizons.
+            </p>
+            <br>
+
+
+          </td>
+        </tr>
+      </div> 
+    </div>
+  </div>
+</section>
+
+
+
+<section class="section" id="task-3">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3" style="text-align: left; padding-bottom: 10px;"> Multi-terrain Interaction </h2>
+        <tr>
+          <td>
+
+            <div class="columns is-centered">
+              <div class="column is-three-fifths has-text-centered">
+                <img src="./static/images/terrian.png" alt="Multi-terrain interaction" style="width: 100%; border-radius:10px;">
+              </div>
+            </div>
+            <br>
+          </td>
+        </tr>
+      </div> 
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3" style="text-align: left; padding-bottom: 0px;" id="terrain-1">Case #1: Cross slope  </h2>
+        <div class="paper-video-row">
+          <div class="paper-video-item">
+            <video class="paper-video" autoplay muted loop playsinline controls src="./static/videos/slope_1.mp4"></video>
+            <div class="gallery-video-caption">View 1</div>
+          </div>
+          <div class="paper-video-item">
+            <video class="paper-video" autoplay muted loop playsinline controls src="./static/videos/slope_2.mp4"></video>
+            <div class="gallery-video-caption">View 2</div>
+          </div>
+        </div>
+        <p class="figure-caption non-gallery-caption">
+          <b>Cross Slope:</b> The policy maintains stable locomotion and object interaction when the carried object occludes visual observation of the ground.
+        </p>
+      </div> 
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3" style="text-align: left; padding-bottom: 0px;" id="terrain-2">Case #2: Cross stair </h2>
+        <div class="paper-video-row">
+          <div class="paper-video-item">
+            <video class="paper-video" autoplay muted loop playsinline controls src="./static/videos/stair_1.mp4"></video>
+            <div class="gallery-video-caption">View 1</div>
+          </div>
+          <div class="paper-video-item">
+            <video class="paper-video" autoplay muted loop playsinline controls src="./static/videos/stair_2.mp4"></video>
+            <div class="gallery-video-caption">View 2</div>
+          </div>
+        </div>
+        <p class="figure-caption non-gallery-caption">
+          <b>Cross Stair:</b> HAIC supports multi-terrain traversal by estimating object/scene dynamics and grounding predictions onto geometric priors.
+        </p>
+      </div> 
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3" style="text-align: left; padding-bottom: 0px;" id="terrain-3">Case #3: Composed terrain </h2>
+        <div class="paper-video-row">
+          <div class="paper-video-item">
+            <video class="paper-video" autoplay muted loop playsinline controls src="./static/videos/multiterrain_1.mp4"></video>
+            <div class="gallery-video-caption">View 1</div>
+          </div>
+          <div class="paper-video-item">
+            <video class="paper-video" autoplay muted loop playsinline controls src="./static/videos/multiterrain_2.mp4"></video>
+            <div class="gallery-video-caption">View 2</div>
+          </div>
+        </div>
+        <p class="figure-caption non-gallery-caption">
+          <b>Composed Terrain:</b> The controller carries a box across composed terrains (platforms, slopes, stairs) under visual blind spots.
+        </p>
+      </div> 
+    </div>
+  </div>
+</section>
+
+<section class="section" id="generalization">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3" style="text-align: left; padding-bottom: 10px;">Generalization</h2>
+      </div> 
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3" style="text-align: left; padding-bottom: 0px;" id="generalization-1">Generalization #1: Box size</h2>
+        
+        <!-- Video Gallery Section - TABLE HEIGHT VIDEOS -->
+        <div class="video-gallery-section" id="tableHeightGallerySection">
+          <div class="video-gallery-container">
+            <div class="video-gallery" id="videoGalleryTableHeight">
+            <!-- Video items with individual captions -->
+            <div class="gallery-video-item">
+              <video class="gallery-video" src="./static/videos/size_1.mp4" autoplay muted playsinline loop controls></video>
+              <div class="gallery-video-caption">0.7 kg, L=40 cm</div>
+            </div>
+            <div class="gallery-video-item">
+              <video class="gallery-video" src="./static/videos/size_2.mp4" autoplay muted playsinline loop controls></video>
+              <div class="gallery-video-caption">0.5 kg, L=30 cm</div>
+            </div>
+            <div class="gallery-video-item">
+              <video class="gallery-video" src="./static/videos/size_3.mp4" autoplay muted playsinline loop controls></video>
+              <div class="gallery-video-caption">1.3 kg, L=36 cm</div>
+            </div>
+          </div>
+          </div>
+          <!-- Container for the caption AND buttons -->
+          <div class="gallery-caption-container">
+              <!-- Move button controls INSIDE caption container -->
+              <div class="gallery-nav-controls">
+                  <button class="gallery-nav left" id="scrollLeftBtnTableHeight">&lt;</button>
+                  <button class="gallery-nav right" id="scrollRightBtnTableHeight">&gt;</button>
+              </div>
+              <!-- Caption text -->
+              <p class="figure-caption gallery-caption">
+                  <b>Box Size:</b> The robot generalizes to various box dimensions and weights. Tested configurations include 0.5–1.3 kg boxes with lengths ranging from 30–40 cm, demonstrating robust performance across different physical properties using dynamics-aware state estimation.
+              </p>
+          </div>
+        </div>
+        <!-- End Video Gallery Section -->
+      </div> 
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3" style="text-align: left; padding-bottom: 0px;" id="generalization-2">Generalization #2: Terrain Rotation </h2>
+        <!-- Video Gallery Section - Terrain Rotation -->
+        <div class="video-gallery-section" id="terrainRotationGallerySection">
+          <div class="video-gallery-container">
+            <div class="video-gallery" id="videoGalleryTerrainRotation">
+              <div class="gallery-video-item">
+                <video class="gallery-video" autoplay muted loop playsinline controls src="./static/videos/multiterrain_1.mp4"></video>
+                <div class="gallery-video-caption">0 degrees</div>
+              </div>
+              <div class="gallery-video-item">
+                <video class="gallery-video" autoplay muted loop playsinline controls src="./static/videos/rotate_2.mp4"></video>
+                <div class="gallery-video-caption">30 degrees</div>
+              </div>
+              <div class="gallery-video-item">
+                <video class="gallery-video" autoplay muted loop playsinline controls src="./static/videos/rotate_3.mp4"></video>
+                <div class="gallery-video-caption">45 degrees</div>
+              </div>
+            </div>
+          </div>
+          <!-- Container for the caption AND buttons -->
+          <div class="gallery-caption-container">
+              <!-- Move button controls INSIDE caption container -->
+              <div class="gallery-nav-controls">
+                  <button class="gallery-nav left" id="scrollLeftBtnTerrainRotation">&lt;</button>
+                  <button class="gallery-nav right" id="scrollRightBtnTerrainRotation">&gt;</button>
+              </div>
+              <!-- Caption text -->
+              <p class="figure-caption gallery-caption">
+                  <b>Terrain Rotation:</b> The robot generalizes across different terrain rotation angles (0°, 30°, 45°) while preserving robust interaction behavior and stable locomotion on rotated surfaces.
+              </p>
+          </div>
+        </div>
+        <!-- End Video Gallery Section -->
+      </div> 
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3" style="text-align: left; padding-bottom: 0px;" id="generalization-3">Generalization #3: Load Weight </h2>
+        <!-- Video Gallery Section - TABLE CLOTH COLOR VIDEOS -->
+        <div class="video-gallery-section" id="tableClothGallerySection1">
+          <div class="video-gallery-container">
+            <div class="video-gallery" id="videoGalleryTableCloth1">
+            <!-- Video items with individual captions -->
+            <div class="gallery-video-item">
+              <video class="gallery-video" src="./static/videos/pullload_1.mp4" autoplay muted playsinline loop controls></video>
+              <div class="gallery-video-caption">Load 0 kg</div>
+            </div>
+            <div class="gallery-video-item">
+              <video class="gallery-video" src="./static/videos/pullload_2.mp4" autoplay muted playsinline loop controls></video>
+              <div class="gallery-video-caption">Load 10 kg</div>
+            </div>
+            <div class="gallery-video-item">
+              <video class="gallery-video" src="./static/videos/pullload_3.mp4" autoplay muted playsinline loop controls></video>
+              <div class="gallery-video-caption">Load 15 kg</div>
+            </div>
+            <div class="gallery-video-item">
+              <video class="gallery-video" src="./static/videos/pullload_4.mp4" autoplay muted playsinline loop controls></video>
+              <div class="gallery-video-caption">Load 20 kg</div>
+            </div>
+          </div>
+          </div>
+          <!-- Container for the caption AND buttons -->
+          <div class="gallery-caption-container">
+              <!-- Move button controls INSIDE caption container -->
+              <div class="gallery-nav-controls">
+                  <button class="gallery-nav left" id="scrollLeftBtnTableCloth1">&lt;</button>
+                  <button class="gallery-nav right" id="scrollRightBtnTableCloth1">&gt;</button>
+              </div>
+              <!-- Caption text -->
+              <p class="figure-caption gallery-caption">
+                  <b>Load Weight (Pulling):</b> Testing with varying loads from Load 0 kg to Load 20 kg. The policy demonstrates robust generalization to heavier loads by proactively compensating inertial perturbations inferred from proprioception.
+              </p>
+          </div>
+        </div>
+        <!-- End Video Gallery Section -->
+      </div> 
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <div class="video-gallery-section" id="tableClothGallerySection2">
+          <div class="video-gallery-container">
+            <div class="video-gallery" id="videoGalleryTableCloth2">
+            <!-- Video items with individual captions -->
+            <div class="gallery-video-item">
+              <video class="gallery-video" src="./static/videos/pushload_1.mp4" autoplay muted playsinline loop controls></video>
+              <div class="gallery-video-caption">Load 0 kg</div>
+            </div>
+            <div class="gallery-video-item">
+              <video class="gallery-video" src="./static/videos/pushload_2.mp4" autoplay muted playsinline loop controls></video>
+              <div class="gallery-video-caption">Load 10 kg</div>
+            </div>
+            <div class="gallery-video-item">
+              <video class="gallery-video" src="./static/videos/pushload_3.mp4" autoplay muted playsinline loop controls></video>
+              <div class="gallery-video-caption">Load 20 kg</div>
+            </div>
+            <div class="gallery-video-item">
+              <video class="gallery-video" src="./static/videos/pushload_4.mp4" autoplay muted playsinline loop controls></video>
+              <div class="gallery-video-caption">Load 30 kg</div>
+            </div>
+            <div class="gallery-video-item">
+              <video class="gallery-video" src="./static/videos/pushload_5.mp4" autoplay muted playsinline loop controls></video>
+              <div class="gallery-video-caption">Load 40 kg</div>
+            </div>
+            <div class="gallery-video-item">
+              <video class="gallery-video" src="./static/videos/pushload_6.mp4" autoplay muted playsinline loop controls></video>
+              <div class="gallery-video-caption">Load 50 kg</div>
+            </div>
+            <div class="gallery-video-item">
+              <video class="gallery-video" src="./static/videos/pushload_7.mp4" autoplay muted playsinline loop controls></video>
+              <div class="gallery-video-caption">Load 60 kg</div>
+            </div>
+            <div class="gallery-video-item">
+              <video class="gallery-video" src="./static/videos/pushload_8.mp4" autoplay muted playsinline loop controls></video>
+              <div class="gallery-video-caption">Load 70 kg</div>
+            </div>
+          </div>
+          </div>
+          <!-- Container for the caption AND buttons -->
+          <div class="gallery-caption-container">
+              <!-- Move button controls INSIDE caption container -->
+              <div class="gallery-nav-controls">
+                  <button class="gallery-nav left" id="scrollLeftBtnTableCloth2">&lt;</button>
+                  <button class="gallery-nav right" id="scrollRightBtnTableCloth2">&gt;</button>
+              </div>
+              <!-- Caption text -->
+              <p class="figure-caption gallery-caption">
+                  <b>Load Weight (Pushing):</b> Comprehensive evaluation across Load from 0 kg to 70 kg. The controller maintains stability and control even under extreme load conditions.
+              </p>
+          </div>
+        </div>
+        <!-- End Video Gallery Section -->
+      </div> 
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3" style="text-align: left; padding-bottom: 10px;" id="failure-cases">Failure Cases</h2>
+        
+        <!-- Video Gallery Section - Failure Cases -->
+        <div class="video-gallery-section" id="failureCasesGallerySection">
+          <div class="video-gallery-container">
+            <div class="video-gallery" id="videoGalleryFailureCases">
+              <!-- Video items with individual captions -->
+              <div class="gallery-video-item">
+                <video class="gallery-video" src="./static/videos/fail_1.mp4" autoplay muted playsinline loop controls></video>
+                <div class="gallery-video-caption">Stumble Off Skateboard</div>
+              </div>
+              <div class="gallery-video-item">
+                <video class="gallery-video" src="./static/videos/fail_2.mp4" autoplay muted playsinline loop controls></video>
+                <div class="gallery-video-caption">Stumble Off Skateboard</div>
+              </div>
+              <div class="gallery-video-item">
+                <video class="gallery-video" src="./static/videos/fail_3.mp4" autoplay muted playsinline loop controls></video>
+                <div class="gallery-video-caption">Failed to Push Cart</div>
+              </div>
+              <div class="gallery-video-item">
+                <video class="gallery-video" src="./static/videos/fail_4.mp4" autoplay muted playsinline loop controls></video>
+                <div class="gallery-video-caption">Failed to Push Cart</div>
+              </div>
+            </div>
+          </div>
+          <!-- Container for the caption AND buttons -->
+          <div class="gallery-caption-container">
+              <!-- Move button controls INSIDE caption container -->
+              <div class="gallery-nav-controls">
+                  <button class="gallery-nav left" id="scrollLeftBtnFailureCases">&lt;</button>
+                  <button class="gallery-nav right" id="scrollRightBtnFailureCases">&gt;</button>
+              </div>
+              <!-- Caption text -->
+              <p class="figure-caption gallery-caption">
+                  <b>Failure Cases:</b> Representative failure modes include stumbling when stepping off skateboards, and occasional failures in cart pushing tasks due to loss of contact or positioning errors.
+              </p>
+          </div>
+        </div>
+        <!-- End Video Gallery Section -->
+      </div> 
+    </div>
+  </div>
+</section>
+    <footer class="footer">
+      <div class="container">
+        <div class="content has-text-centered">
+          <p>Page template borrowed from <a href="https://viral-humanoid.github.io/" target="_blank" class="dnerf">VIRAL</a></p>
+        </div>
+      </div>
+    </footer>
+
+  <!-- JavaScript for TOC Scroll Behavior -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const toc = document.querySelector('.toc');
+      const mainTitle = document.getElementById('main-title');
+      
+      if (toc && mainTitle) {
+        // Function to check if we should show the TOC
+        function checkTocVisibility() {
+          const titleRect = mainTitle.getBoundingClientRect();
+          
+          // Show TOC when the main title is getting close to the top (with 100px buffer)
+          if (titleRect.top <= 100) {
+            toc.classList.add('show');
+          } else {
+            toc.classList.remove('show');
+          }
+        }
+        
+        // Check on scroll
+        window.addEventListener('scroll', checkTocVisibility);
+        
+        // Check on load
+        checkTocVisibility();
+      }
+
+      // Active section highlighting in TOC
+      const tocLinks = document.querySelectorAll('.toc a');
+      const sections = [];
+      
+      // Collect all sections that have corresponding TOC links
+      tocLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          const sectionId = href.substring(1);
+          const section = document.getElementById(sectionId);
+          if (section) {
+            sections.push({
+              id: sectionId,
+              element: section,
+              link: link
+            });
+          }
+        }
+      });
+
+      function updateActiveTocLink() {
+        // Get current scroll position (with offset from top)
+        const scrollPosition = window.scrollY + 150; // 150px offset to trigger earlier
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+        
+        // Find the current section
+        let currentSection = null;
+        
+        // Check if we're at the bottom of the page
+        if (window.scrollY + windowHeight >= documentHeight - 50) {
+          // If at bottom, highlight the last section
+          currentSection = sections[sections.length - 1];
+        } else {
+          // Find the section that's currently in view
+          for (let i = 0; i < sections.length; i++) {
+            const section = sections[i];
+            const rect = section.element.getBoundingClientRect();
+            const sectionTop = rect.top + window.scrollY;
+            const sectionBottom = sectionTop + rect.height;
+            
+            // Check if the top of viewport is within this section (with offset)
+            if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+              currentSection = section;
+              break;
+            }
+          }
+          
+          // If no section found in viewport, use the last section that's above current position
+          if (!currentSection) {
+            for (let i = sections.length - 1; i >= 0; i--) {
+              const section = sections[i];
+              const sectionTop = section.element.getBoundingClientRect().top + window.scrollY;
+              if (sectionTop <= scrollPosition) {
+                currentSection = section;
+                break;
+              }
+            }
+          }
+        }
+
+        // Update active class on TOC links
+        tocLinks.forEach(link => {
+          link.classList.remove('active');
+        });
+
+        if (currentSection) {
+          currentSection.link.classList.add('active');
+          
+          // Also highlight parent link if this is a subsection
+          const parentLi = currentSection.link.closest('li');
+          if (parentLi && parentLi.classList.contains('toc-subsection')) {
+            // Find the previous sibling that is not a subsection (the parent section)
+            let prevSibling = parentLi.previousElementSibling;
+            while (prevSibling) {
+              if (!prevSibling.classList.contains('toc-subsection')) {
+                const parentSectionLink = prevSibling.querySelector('a');
+                if (parentSectionLink) {
+                  parentSectionLink.classList.add('active');
+                }
+                break;
+              }
+              prevSibling = prevSibling.previousElementSibling;
+            }
+          }
+        }
+      }
+
+      // Update on scroll
+      window.addEventListener('scroll', updateActiveTocLink);
+      
+      // Update on load
+      updateActiveTocLink();
+    });
+  </script>
+
+  <!-- JavaScript for Video Gallery Navigation -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const galleries = [
+        {
+          sectionId: 'tableHeightGallerySection',
+          galleryInnerId: 'videoGalleryTableHeight',
+          scrollLeftBtnId: 'scrollLeftBtnTableHeight',
+          scrollRightBtnId: 'scrollRightBtnTableHeight'
+        },
+        {
+          sectionId: 'terrainRotationGallerySection',
+          galleryInnerId: 'videoGalleryTerrainRotation',
+          scrollLeftBtnId: 'scrollLeftBtnTerrainRotation',
+          scrollRightBtnId: 'scrollRightBtnTerrainRotation'
+        },
+        {
+          sectionId: 'tableClothGallerySection1',
+          galleryInnerId: 'videoGalleryTableCloth1',
+          scrollLeftBtnId: 'scrollLeftBtnTableCloth1',
+          scrollRightBtnId: 'scrollRightBtnTableCloth1'
+        },
+        {
+          sectionId: 'tableClothGallerySection2',
+          galleryInnerId: 'videoGalleryTableCloth2',
+          scrollLeftBtnId: 'scrollLeftBtnTableCloth2',
+          scrollRightBtnId: 'scrollRightBtnTableCloth2'
+        },
+        {
+          sectionId: 'failureCasesGallerySection',
+          galleryInnerId: 'videoGalleryFailureCases',
+          scrollLeftBtnId: 'scrollLeftBtnFailureCases',
+          scrollRightBtnId: 'scrollRightBtnFailureCases'
+        }
+      ];
+
+      galleries.forEach(gallery => {
+        const section = document.getElementById(gallery.sectionId);
+        const galleryInner = document.getElementById(gallery.galleryInnerId);
+        const scrollLeftBtn = document.getElementById(gallery.scrollLeftBtnId);
+        const scrollRightBtn = document.getElementById(gallery.scrollRightBtnId);
+
+        if (section && galleryInner && scrollLeftBtn && scrollRightBtn) {
+          // Find the scrollable container (robust to minor HTML structure changes)
+          const galleryContainer = galleryInner.closest('.video-gallery-container') || galleryInner.parentElement;
+
+          const navControls = scrollLeftBtn.closest('.gallery-nav-controls');
+
+          function updateNavState() {
+            if (!galleryContainer) return;
+
+            const canScroll = (galleryContainer.scrollWidth - galleryContainer.clientWidth) > 8;
+
+            if (navControls) {
+              navControls.style.display = 'flex';
+            }
+
+            const atStart = galleryContainer.scrollLeft <= 2;
+            const atEnd = (galleryContainer.scrollLeft + galleryContainer.clientWidth) >= (galleryContainer.scrollWidth - 2);
+
+            scrollLeftBtn.disabled = (!canScroll) || atStart;
+            scrollRightBtn.disabled = (!canScroll) || atEnd;
+
+            scrollLeftBtn.style.opacity = ((!canScroll) || atStart) ? '0.45' : '1';
+            scrollRightBtn.style.opacity = ((!canScroll) || atEnd) ? '0.45' : '1';
+          }
+
+          function getScrollAmount() {
+            return Math.max(240, Math.floor((galleryContainer?.clientWidth || 300) * 0.85));
+          }
+
+          scrollLeftBtn.addEventListener('click', function() {
+            const scrollAmount = getScrollAmount();
+            galleryContainer.scrollBy({
+              left: -scrollAmount,
+              behavior: 'smooth'
+            });
+          });
+
+          scrollRightBtn.addEventListener('click', function() {
+            const scrollAmount = getScrollAmount();
+            galleryContainer.scrollBy({
+              left: scrollAmount,
+              behavior: 'smooth'
+            });
+          });
+
+          galleryContainer.addEventListener('scroll', updateNavState, { passive: true });
+          window.addEventListener('resize', updateNavState);
+
+          // Initialize
+          updateNavState();
+
+          console.log(`Gallery navigation initialized for ${gallery.sectionId}`);
+        } else {
+          console.error(`Gallery elements not found for ${gallery.sectionId}`);
+        }
+      });
+    });
+  </script>
+
+  <!-- JavaScript for Timeline Navigation -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const timelineContainer = document.getElementById('sim2realTimelineContainer');
+      const navLeft = document.getElementById('sim2realNavLeft');
+      const navRight = document.getElementById('sim2realNavRight');
+
+      if (timelineContainer && navLeft && navRight) {
+        navLeft.addEventListener('click', function() {
+          const scrollAmount = 400; // Adjust scroll distance as needed
+          timelineContainer.scrollBy({
+            left: -scrollAmount,
+            behavior: 'smooth'
+          });
+        });
+
+        navRight.addEventListener('click', function() {
+          const scrollAmount = 400; // Adjust scroll distance as needed
+          timelineContainer.scrollBy({
+            left: scrollAmount,
+            behavior: 'smooth'
+          });
+        });
+
+        console.log('Timeline navigation initialized');
+      } else {
+        console.error('Timeline elements not found');
+      }
+
+      // Handle video clicks for enlarged display
+      const timelineVideos = document.querySelectorAll('.clickable-video');
+      const enlargedVideo = document.getElementById('enlargedVideo');
+      const enlargedVideoTitle = document.getElementById('enlargedVideoTitle');
+      const enlargedVideoDate = document.getElementById('enlargedVideoDate');
+
+      if (timelineVideos.length > 0 && enlargedVideo) {
+        // Set first video as active by default
+        timelineVideos[0].classList.add('active');
+
+        timelineVideos.forEach(function(video) {
+          video.addEventListener('click', function() {
+            // Remove active class from all videos
+            timelineVideos.forEach(v => v.classList.remove('active'));
+            
+            // Add active class to clicked video
+            this.classList.add('active');
+
+            // Update enlarged video
+            const videoSrc = this.getAttribute('src');
+            const videoTitle = this.getAttribute('data-title');
+            const videoDate = this.getAttribute('data-date');
+
+            enlargedVideo.src = videoSrc;
+            enlargedVideoTitle.textContent = videoTitle;
+            enlargedVideoDate.textContent = videoDate;
+
+            // Restart the enlarged video
+            enlargedVideo.load();
+            enlargedVideo.play();
+
+            console.log('Video clicked:', videoTitle);
+          });
+        });
+
+        console.log('Timeline video click handlers initialized');
+      }
+    });
+  </script>
+
+</body>
+
+</html>
