@@ -132,7 +132,7 @@
         <li class="toc-subsection"><a href="#underactuated-2">#2: Cart Pushing</a></li>
         <li class="toc-subsection"><a href="#underactuated-3">#3: Cart Pulling</a></li>
 
-      <li><a href="#task-2">Long-horizon Interaction</a></li>
+      <li><a href="#task-2">Sequential Interaction</a></li>
       <li><a href="#task-3">Multi-terrain Interaction</a></li>
         <li class="toc-subsection"><a href="#terrain-1">#1: Cross slope</a></li>
         <li class="toc-subsection"><a href="#terrain-2">#2: Cross stair</a></li>
@@ -267,7 +267,7 @@
       <div class="column is-four-fifths">
         <div class="content has-text-justified">
           <p>
-            Humanoid robots exhibit significant potential for executing complex whole-body interaction tasks in unstructured environments. While recent advancements in Human-Object Interaction (HOI) have been substantial, prevailing methodologies predominantly address the manipulation of fully actuated objects, where the target is rigidly coupled to the robot's end-effector and its state is strictly constrained by the robot's kinematics. This paradigm neglects the pervasive class of underactuated objects characterized by independent dynamics and non-holonomic constraints, which pose significant control challenges due to complex coupling forces and frequent visual occlusions. To bridge this gap, we propose HAIC, a unified framework designed to enable robust interaction across a spectrum of object dynamics without reliance on external state estimation. Central to our approach is a novel dynamics predictor that infers high-order object states, specifically velocity and acceleration, solely from proprioceptive history. These predictions are explicitly projected onto static geometric priors to construct a spatially grounded representation of dynamic occupancy, allowing the policy to internalize collision boundaries and contact affordances in visual blind spots. We employ an asymmetric fine-tuning strategy where the world model continuously adapts to the student policy's exploration, ensuring robust state estimation under distribution shifts. We evaluate our framework on a humanoid robot. Empirical results demonstrate that HAIC achieves high success rates in agile object interactions, including skateboarding, cart pushing, and cart pulling under various weight load conditions, by proactively compensating for inertial physical perturbations, while HAIC simultaneously masters multi-object interaction involving long-horizon tasks and carrying a box across composed terrain by predicting the dynamics of multiple objects.
+            Humanoid robots exhibit significant potential for executing complex whole-body interaction tasks in unstructured environments. While recent advancements in Human-Object Interaction (HOI) have been substantial, prevailing methodologies predominantly address the manipulation of fully actuated objects, where the target is rigidly coupled to the robot's end-effector and its state is strictly constrained by the robot's kinematics. This paradigm neglects the pervasive class of underactuated objects characterized by independent dynamics and non-holonomic constraints, which pose significant control challenges due to complex coupling forces and frequent visual occlusions. To bridge this gap, we propose HAIC, a unified framework designed to enable robust interaction across a spectrum of object dynamics without reliance on external state estimation. Central to our approach is a novel dynamics predictor that infers high-order object states, specifically velocity and acceleration, solely from proprioceptive history. These predictions are explicitly projected onto static geometric priors to construct a spatially grounded representation of dynamic occupancy, allowing the policy to internalize collision boundaries and contact affordances in visual blind spots. We employ an asymmetric fine-tuning strategy where the world model continuously adapts to the student policy’s exploration, ensuring robust state estimation under distribution shifts. We evaluate our framework on a Unitree G1 humanoid robot. Empirical results demonstrate that HAIC achieves high success rates in agile object interactions, including skateboarding, cart pushing, and cart pulling under various weight load conditions, by compensating for inertial physical perturbations. Furthermore, by accurately predicting multi-object dynamics, it seamlessly masters sequential tasks and carries a box across composed terrains.
           </p>
 
         </div>
@@ -377,7 +377,7 @@
   <div class="container">
     <div class="columns is-centered">
       <div class="column is-full-width">
-        <h2 class="title is-2" style="text-align: left; padding-bottom: 10px;"> Long-horizon Interaction </h2>
+        <h2 class="title is-2" style="text-align: left; padding-bottom: 10px;"> Sequential Interaction </h2>
         <tr>
           <td>
             <div class="columns is-centered"> <!-- Correct Bulma structure -->
